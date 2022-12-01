@@ -2,8 +2,11 @@ import Grid from "./Grid.js"
 import Tile from "./Tile.js";
 
 const gameBoard = document.getElementById("game-board")
-
+const scoreElem = document.querySelector("[data-score]")
+const scoreAmountElem = document.querySelector("[data-score-amount]")
+const currentGame = { score: 0, tiles: [], date: new Date() };
 const grid = new Grid(gameBoard);
+
 grid.randomEmptyCell().tile = new Tile(gameBoard);
 grid.randomEmptyCell().tile = new Tile(gameBoard);
 setupInput();
@@ -13,38 +16,43 @@ function setupInput() {
 }
 
 async function handleInput(e) {
+  let additionalScore;
   switch(e.key) {
     case "ArrowUp":
       if (!canMoveUp()) {
         setupInput();
         return;
       }
-      await moveUp();
+      additionalScore = await moveUp();
       break;
     case "ArrowDown":
       if (!canMoveDown()) {
         setupInput();
         return;
       }
-      await moveDown();
+      additionalScore = await moveDown();
       break;
     case "ArrowLeft":
       if (!canMoveLeft()) {
         setupInput();
         return;
       }
-      await moveLeft();
+      additionalScore = await moveLeft();
       break;
     case "ArrowRight":
       if (!canMoveRight()) {
         setupInput();
         return;
       }
-      await moveRight();
+      additionalScore = await moveRight();
       break;
     default:
       setupInput();
       return;
+  }
+  if (additionalScore && additionalScore > 0) {
+    currentGame.score += additionalScore;
+    showScore(additionalScore);
   }
   grid.cells.forEach(cell => cell.mergeTiles());
   const newTile = new Tile(gameBoard);
@@ -56,7 +64,46 @@ async function handleInput(e) {
     });
     return;
   }
+
+  saveCurrentState();
   setupInput();
+}
+
+function saveCurrentState() {
+  currentGame.tiles = grid.cells
+    .filter(cell => cell.tile != null)
+    .map(cell => {
+      return { x: cell.x, y: cell.y, value: cell.tile.value }
+    })
+  currentGame.highestTile = Math.max(
+    ...grid.cells.map(cell => cell.tile?.value || 0)
+  )
+}
+
+async function showScore(additionalScore) {
+  scoreAmountElem.textContent = currentGame.score;
+  if (additionalScore != null) {
+    const additionalScoreElem = document.createElement("div")
+    additionalScoreElem.classList.add("additional-score")
+    additionalScoreElem.textContent = `+${additionalScore}`
+    const startX = Math.random() * 100
+    const startY = Math.random() * 100
+    additionalScoreElem.style.setProperty("--start-x", `${startX}%`)
+    additionalScoreElem.style.setProperty("--start-y", `${startY}%`)
+    additionalScoreElem.style.setProperty(
+      "--end-x",
+      `${startX + (Math.random() < 0.5 ? 1 : -1) * (Math.random() * 50 + 50)}%`
+    )
+    additionalScoreElem.style.setProperty(
+      "--end-y",
+      `${startY + Math.random() * 50 + 50}%`
+    )
+    scoreElem.appendChild(additionalScoreElem);
+    await new Promise((resolve) => {
+      additionalScoreElem.addEventListener("animationend", resolve, { once: true });
+    })
+    additionalScoreElem.remove();
+  }
 }
 
 function moveUp() {
@@ -75,8 +122,8 @@ function moveRight() {
   return slideTiles(grid.cellsByRow.map(row => [...row].reverse()));
 }
 
-function slideTiles(cells) {
-  return Promise.all(
+async function slideTiles(cells) {
+  await Promise.all(
     cells.flatMap((group) => {
       const promises = [];
       for (let i = 1; i < group.length; i++) {
@@ -101,6 +148,11 @@ function slideTiles(cells) {
       return promises;
     })
   )
+  const additionalScore = grid.cells.reduce((sum, cell) => {
+    if (cell.mergeTile == null || cell.tile == null) return sum
+    return sum + cell.mergeTile.value + cell.tile.value
+  }, 0)
+  return additionalScore
 }
 
 function canMoveUp() {

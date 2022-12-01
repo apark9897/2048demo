@@ -4,11 +4,23 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>2048 Game</title>
   <link rel="stylesheet" type="text/css" href="styles.css">
   <script src="script.js" type="module"></script>
 </head>
 <body>
+  <header class="header">
+    <button data-stats-btn class="icon-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" viewBox="0 0 24 24"><rect fill="none" height="24" width="24"/><g><path d="M7.5,21H2V9h5.5V21z M14.75,3h-5.5v18h5.5V3z M22,11h-5.5v10H22V11z"/></g></svg>
+    </button>
+    <h1 class="title">2048 Game</h1>
+    <div class="score-container stat-container">
+      <span class="stat-label">Score</span>
+      <div data-score class="score">
+        <div data-score-amount class="stat-amount score-amount">0</div>
+      </div>
+    </div>
+  </header>
   <div id="game-board"></div>
 </body>
 </html>
