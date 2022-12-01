@@ -82,6 +82,11 @@ function saveCurrentState() {
 
 async function showScore(additionalScore) {
   scoreAmountElem.textContent = currentGame.score;
+  scoreAmountElem.setAttribute("data-animation", "pop");
+  await new Promise((resolve) => {
+    scoreAmountElem.addEventListener("animationend", resolve, { once: true });
+  });
+  scoreAmountElem.removeAttribute("data-animation");
   if (additionalScore != null) {
     const additionalScoreElem = document.createElement("div")
     additionalScoreElem.classList.add("additional-score")
