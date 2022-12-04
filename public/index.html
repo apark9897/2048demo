@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,19 +9,133 @@
   <link rel="stylesheet" type="text/css" href="styles.css">
   <script src="script.js" type="module"></script>
 </head>
+
 <body>
   <header class="header">
     <button data-stats-btn class="icon-btn">
-      <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" viewBox="0 0 24 24"><rect fill="none" height="24" width="24"/><g><path d="M7.5,21H2V9h5.5V21z M14.75,3h-5.5v18h5.5V3z M22,11h-5.5v10H22V11z"/></g></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" viewBox="0 0 24 24">
+        <rect fill="none" height="24" width="24" />
+        <g>
+          <path d="M7.5,21H2V9h5.5V21z M14.75,3h-5.5v18h5.5V3z M22,11h-5.5v10H22V11z" />
+        </g>
+      </svg>
     </button>
-    <h1 class="title">2048 Game</h1>
+    <h1 class="title">2048</h1>
     <div class="score-container stat-container">
-      <span class="stat-label">Score</span>
+      <span class="stat-label score-label">Score</span>
       <div data-score class="score">
         <div data-score-amount class="stat-amount score-amount">0</div>
       </div>
     </div>
   </header>
   <div id="game-board"></div>
+  <template data-stats-modal-template>
+    <div class="modal stat-modal" data-modal role="dialog" aria-labelledby="statsModalTitle">
+      <button aria-label="Close" class="modal-close-btn" data-modal-close>&times;</button>
+      <header class="modal-header">
+        <h2 id="statsModalTitle" class="modal-title">Leaderboard</h2>
+      </header>
+      <div class="modal-body">
+        <div class="modal-section">
+          <div class="stats-leaderboard">
+            <table class="stats-leaderboard-table">
+              <tbody>
+                <tr>
+                  <td>1.</td>
+                  <td>TestUser</td>
+                  <td>20982344</td>
+                </tr>
+                <tr>
+                  <td>2.</td>
+                  <td>TestUser</td>
+                  <td>20982344</td>
+                </tr>
+                <tr>
+                  <td>3.</td>
+                  <td>TestUser</td>
+                  <td>20982344</td>
+                </tr>
+                <tr>
+                  <td>4.</td>
+                  <td>TestUser</td>
+                  <td>20982344</td>
+                </tr>
+                <tr>
+                  <td>5.</td>
+                  <td>TestUser</td>
+                  <td>20982344</td>
+                </tr>
+                <tr>
+                  <td>6.</td>
+                  <td>TestUser</td>
+                  <td>20982344</td>
+                </tr>
+                <tr>
+                  <td>7.</td>
+                  <td>TestUser</td>
+                  <td>20982344</td>
+                </tr>
+                <tr>
+                  <td>8.</td>
+                  <td>TestUser</td>
+                  <td>20982344</td>
+                </tr>
+                <tr>
+                  <td>9.</td>
+                  <td>TestUser</td>
+                  <td>20982344</td>
+                </tr>
+                <tr>
+                  <td>10.</td>
+                  <td>TestUser</td>
+                  <td>20982344</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-section">
+          <div class="stat-grid">
+            <div class="stat-container" data-stat-container>
+              <div class="stat-label">Current Score</div>
+              <div class="stat-amount" data-current-game-score></div>
+            </div>
+            <div class="stat-container" data-stat-container>
+              <div class="stat-label">Current Largest Tile</div>
+              <div class="stat-amount" data-current-game-highest-tile></div>
+            </div>
+            <div class="stat-container" data-stat-container>
+              <div class="stat-label">All Time Largest Tile</div>
+              <div class="stat-amount" data-highest-tile></div>
+            </div>
+            <div class="stat-container" data-stat-container>
+              <div class="stat-label">High Score</div>
+              <div class="stat-amount" data-high-score></div>
+            </div>
+            <div class="stat-container" data-stat-container>
+              <div class="stat-label">Current Rank</div>
+              <div class="stat-amount" data-highest-rank>1</div>
+            </div>
+            <div class="stat-container" data-stat-container>
+              <div class="stat-label">Current Percentile</div>
+              <div class="stat-amount" data-highest-percentile>Top 50%</div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-section">
+          <div class="stats-bottom-section">
+            <button class="replay-btn" data-replay-btn>
+              <svg fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path
+                  d="M 2 2 L 4.9414062 4.9414062 C 3.1620561 6.7129386 2 9.209162 2 12 C 2 17.533333 6.4666667 22 12 22 C 17.533333 22 22 17.533333 22 12 C 22 6.4666667 17.533333 2 12 2 L 12 4 C 16.466667 4 20 7.5333333 20 12 C 20 16.466667 16.466667 20 12 20 C 7.5333333 20 4 16.466667 4 12 C 4 9.7594337 4.9364614 7.7627686 6.3535156 6.3535156 L 9 9 L 9 2 L 2 2 z" />
+              </svg>
+              Play Again
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
 </body>
+
 </html>

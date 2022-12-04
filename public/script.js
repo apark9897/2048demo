@@ -1,10 +1,16 @@
 import Grid from "./Grid.js"
 import Tile from "./Tile.js";
+import Stats from "./Stats.js";
+import uuidv4 from './uuidv4.js';
+import Modal from "./Modal.js";
 
 const gameBoard = document.getElementById("game-board")
 const scoreElem = document.querySelector("[data-score]")
 const scoreAmountElem = document.querySelector("[data-score-amount]")
-const currentGame = { score: 0, tiles: [], date: new Date() };
+const currentGame = { score: 0, highestTile: 0, tiles: [], date: new Date() };
+const playerId = localStorage.getItem("playerId") || uuidv4();
+const stats = new Stats(playerId);
+const statsModal = setupStatsModal();
 const grid = new Grid(gameBoard);
 
 grid.randomEmptyCell().tile = new Tile(gameBoard);
@@ -13,6 +19,10 @@ setupInput();
 
 function setupInput() {
   window.addEventListener("keydown", handleInput, { once: true });
+}
+
+function stopInput() {
+  window.removeEventListener("keydown", handleInput, { once: true });
 }
 
 async function handleInput(e) {
@@ -60,7 +70,7 @@ async function handleInput(e) {
 
   if (!canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight()) {
     newTile.waitForTransition(true).then(() => {
-      alert("Game Over")
+      handleGameOver();
     });
     return;
   }
@@ -185,4 +195,54 @@ function canMove(cells) {
       return moveToCell.canAccept(cell.tile);
     })
   })
+}
+
+function handleGameOver() {
+  if (stats.highScore < currentGame.score) {
+    stats.highScore = currentGame.score
+  }
+  if (stats.highestTile < currentGame.highestTile) {
+    stats.highestTile = currentGame.highestTile
+  }
+  if (!localStorage.getItem("playerId")) localStorage.setItem("playerId", playerId);
+  stats.updatePlayerStats();
+}
+
+function setupStatsModal() {
+  const statsBtn = document.querySelector("[data-stats-btn]");
+  statsBtn.addEventListener("click", () => {
+    statsModal.show()
+  })
+  return new Modal(
+    document.querySelector("[data-stats-modal-template]"),
+    {
+      onOpen: modal => {
+        stopInput()
+        populateStatsModal(modal)
+      },
+      onClose: () => setupInput(),
+    }
+  )
+}
+
+function populateStatsModal(modal) {
+  const setValue = (selector, value, best = false) => {
+    const elem = modal.querySelector(`[data-${selector}]`)
+    elem.textContent = value
+    elem.closest("[data-stat-container]").classList.toggle("best", best)
+  }
+
+  setValue(
+    "current-game-score",
+    currentGame.score,
+    currentGame.score >= stats.highScore
+  )
+  setValue(
+    "current-game-highest-tile",
+    currentGame.highestTile,
+    currentGame.highestTile >= stats.highestTile
+  )
+
+  setValue("high-score", stats.highScore)
+  setValue("highest-tile", stats.highestTile)
 }
