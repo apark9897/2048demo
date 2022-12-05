@@ -63,7 +63,7 @@ export default class Modal {
       this.modalContainer.addEventListener("transitionend", resolve, { once: true });
     })
     this.modalContainer.remove();
-    (this.previousFocus ?? document.body).focus()
+    (this.previousFocus ?? document.body).focus();
     this.onClose()
   }
 }

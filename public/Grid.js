@@ -42,6 +42,15 @@ export default class Grid {
     const randomIndex = Math.floor(Math.random() * this.#emptyCells.length);
     return this.#emptyCells[randomIndex];
   }
+
+  clearBoard() {
+    for (let cell of this.#cells) {
+      if (cell.tile != null) {
+        cell.tile.remove();
+        cell.tile = null;
+      }
+    }
+  }
 }
 
 class Cell {

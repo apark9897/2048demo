@@ -1,13 +1,17 @@
 export default class Stats {
   #highScore
   #highestTile
+  #highestRank
+  #highestPercentile
   #playerId
   
   constructor(playerId) {
-    this.#highScore = 0;
-    this.#highestTile = 0;
     this.#playerId = playerId;
-    // fetchPlayerStats();
+    this.#highScore = localStorage.getItem("highScore") || 0;
+    this.#highestTile = localStorage.getItem("highestTile") || 0;
+    this.#highestRank = localStorage.getItem("highestRank") || 0;
+    this.#highestPercentile = localStorage.getItem("highestPercentile") || 0;
+    this.fetchPlayerStats();
   }
 
   get playerId() {
@@ -20,6 +24,7 @@ export default class Stats {
 
   set highScore(score) {
     this.#highScore = score;
+    localStorage.setItem("highScore", this.#highScore);
   }
 
   get highestTile() {
@@ -28,6 +33,25 @@ export default class Stats {
 
   set highestTile(value) {
     this.#highestTile = value;
+    localStorage.setItem("highestTile", this.#highestTile);
+  }
+
+  get highestRank() {
+    return this.#highestRank;
+  }
+
+  set highestRank(value) {
+    this.#highestRank = value;
+    localStorage.setItem("highestRank", this.#highestRank);
+  }
+
+  get highestPercentile() {
+    return this.#highestPercentile;
+  }
+
+  set highestPercentile(value) {
+    this.#highestPercentile = value;
+    localStorage.setItem("highestPercentile", this.#highestPercentile);
   }
 
   async fetchPlayerStats() {
@@ -35,16 +59,21 @@ export default class Stats {
       // db call
       setTimeout(2000);
       resolve({
-        highScore: 1480348,
-        highestTile: 4096
+        highScore: 160,
+        highestTile: 4,
+        highestRank: 2,
+        highestPercentile: 1
       });
     });
-    this.#highScore = data.highScore;
-    this.#highestTile = data.highestTile;
+    this.highScore = data.highScore;
+    this.highestTile = data.highestTile;
+    this.highestRank = data.highestRank;
+    this.highestPercentile = data.highestPercentile;
   }
 
-  updatePlayerStats() {
+  async updatePlayerStats() {
     // save to db
+    setTimeout(2000);
   }
 
   fetchLeaderboard() {

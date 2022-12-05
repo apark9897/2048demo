@@ -8,7 +8,8 @@ const gameBoard = document.getElementById("game-board")
 const scoreElem = document.querySelector("[data-score]")
 const scoreAmountElem = document.querySelector("[data-score-amount]")
 const currentGame = { score: 0, highestTile: 0, tiles: [], date: new Date() };
-const playerId = localStorage.getItem("playerId") || uuidv4();
+if (!localStorage.getItem("playerId")) localStorage.setItem("playerId", uuidv4());
+const playerId = localStorage.getItem("playerId");
 const stats = new Stats(playerId);
 const statsModal = setupStatsModal();
 const grid = new Grid(gameBoard);
@@ -68,15 +69,15 @@ async function handleInput(e) {
   const newTile = new Tile(gameBoard);
   grid.randomEmptyCell().tile = newTile;
 
+  saveCurrentState();
+  setupInput();
+
   if (!canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight()) {
     newTile.waitForTransition(true).then(() => {
       handleGameOver();
     });
     return;
   }
-
-  saveCurrentState();
-  setupInput();
 }
 
 function saveCurrentState() {
@@ -204,8 +205,8 @@ function handleGameOver() {
   if (stats.highestTile < currentGame.highestTile) {
     stats.highestTile = currentGame.highestTile
   }
-  if (!localStorage.getItem("playerId")) localStorage.setItem("playerId", playerId);
   stats.updatePlayerStats();
+  statsModal.show();
 }
 
 function setupStatsModal() {
@@ -232,6 +233,8 @@ function populateStatsModal(modal) {
     elem.closest("[data-stat-container]").classList.toggle("best", best)
   }
 
+  setupReplayButton(modal);
+
   setValue(
     "current-game-score",
     currentGame.score,
@@ -245,4 +248,28 @@ function populateStatsModal(modal) {
 
   setValue("high-score", stats.highScore)
   setValue("highest-tile", stats.highestTile)
+  setValue("highest-rank", stats.highestRank)
+  setValue("highest-percentile", `Top ${stats.highestPercentile}%`)
+}
+
+function setupReplayButton(modal) {
+  const replayBtn = modal.querySelector("[data-replay-btn]");
+  replayBtn.addEventListener("click", async () => {
+    if (stats.highScore < currentGame.score) {
+      stats.highScore = currentGame.score
+    }
+    if (stats.highestTile < currentGame.highestTile) {
+      stats.highestTile = currentGame.highestTile
+    }
+    await stats.updatePlayerStats();
+    grid.clearBoard();
+    currentGame.score = 0;
+    currentGame.highestTile = 0;
+    currentGame.tiles = [];
+    currentGame.date = new Date();
+    statsModal.hide();
+    showScore();
+    grid.randomEmptyCell().tile = new Tile(gameBoard);
+    grid.randomEmptyCell().tile = new Tile(gameBoard);
+  })
 }

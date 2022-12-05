@@ -102,6 +102,29 @@ body {
   justify-content: flex-end;
 }
 
+.stat-container.best .stat-label::after {
+  content: "New Best";
+  width: max-content;
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: .8em;
+  color: var(--text-color-light);
+  animation: bounce 500ms ease-in alternate infinite;
+}
+
+@keyframes bounce {
+  0% {
+    opacity: .25;
+    transform: translate(25%, -100%) rotate(20deg) scale(.8);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(25%, -100%) rotate(20deg) scale(1);
+  }
+}
+
 .stat-label {
   position: relative;
   font-size: max(2vmin, 10px);
