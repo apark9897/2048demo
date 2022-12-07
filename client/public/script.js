@@ -227,6 +227,7 @@ function setupStatsModal() {
 }
 
 function populateStatsModal(modal) {
+  populateLeaderboard(modal.querySelector(`[data-leaderboard]`));
   const setValue = (selector, value, best = false) => {
     const elem = modal.querySelector(`[data-${selector}]`)
     elem.textContent = value
@@ -250,6 +251,15 @@ function populateStatsModal(modal) {
   setValue("highest-tile", stats.highestTile)
   setValue("highest-rank", stats.highestRank)
   setValue("highest-percentile", `Top ${stats.highestPercentile}%`)
+}
+
+function populateLeaderboard(leaderboardElem) {
+  const rows = leaderboardElem.children;
+  for (let i = 0; i < stats.leaderboard.length; i++) {
+    const rowElem = rows[i];
+    rowElem.querySelector(`[data-ranked-user]`).textContent = stats.leaderboard[i].user;
+    rowElem.querySelector(`[data-ranked-score]`).textContent = stats.leaderboard[i].score;
+  }
 }
 
 function setupReplayButton(modal) {

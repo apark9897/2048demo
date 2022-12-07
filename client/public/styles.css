@@ -303,20 +303,21 @@ body {
 .stats-leaderboard-table tr {
   text-align: left;
   font-weight: bold;
-}
-
-.stats-leaderboard-table th, .stats-leaderboard-table td {
   padding-bottom: .3em;
   font-size: max(2vmin, 14px);
 }
 
 .stats-leaderboard-table td:first-child {
-  text-align: center;
   width: 2em;
 }
 
 .stats-leaderboard-table td:nth-child(2) {
   width: 10em;
+}
+
+.stats-leaderboard-table td:nth-child(3) {
+  width: 8em;
+  text-align: right;
 }
 
 .replay-btn {

@@ -4,6 +4,8 @@ const port = 2048;
 
 const app = express();
 
-app.use(express.static(path.join(__dirname, 'public')))
+app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')))
+app.use('/stats', require('./routes/stats'));
+app.use('/', express.static(path.join(__dirname, 'public')));
 
 app.listen(port, () => console.info(`Listening on port ${port}`));

@@ -1,8 +1,11 @@
+const baseUrl = 'http://localhost:2048';
+
 export default class Stats {
   #highScore
   #highestTile
   #highestRank
   #highestPercentile
+  #leaderboard
   #playerId
   
   constructor(playerId) {
@@ -11,7 +14,9 @@ export default class Stats {
     this.#highestTile = localStorage.getItem("highestTile") || 0;
     this.#highestRank = localStorage.getItem("highestRank") || 0;
     this.#highestPercentile = localStorage.getItem("highestPercentile") || 0;
+    this.#leaderboard = localStorage.getItem("leaderboard") || [];
     this.fetchPlayerStats();
+    this.fetchLeaderboard();
   }
 
   get playerId() {
@@ -54,21 +59,21 @@ export default class Stats {
     localStorage.setItem("highestPercentile", this.#highestPercentile);
   }
 
+  get leaderboard() {
+    return this.#leaderboard;
+  }
+
+  set leaderboard(l) {
+    this.#leaderboard = l;
+    localStorage.setItem("leaderboard", this.#leaderboard);
+  }
+
   async fetchPlayerStats() {
-    let data = await new Promise((resolve) => {
-      // db call
-      setTimeout(2000);
-      resolve({
-        highScore: 160,
-        highestTile: 4,
-        highestRank: 2,
-        highestPercentile: 1
-      });
-    });
-    this.highScore = data.highScore;
-    this.highestTile = data.highestTile;
-    this.highestRank = data.highestRank;
-    this.highestPercentile = data.highestPercentile;
+    let response = await axios(`${baseUrl}/stats/player/${this.playerId}`);
+    this.highScore = response.data.highScore;
+    this.highestTile = response.data.highestTile;
+    this.highestRank = response.data.highestRank;
+    this.highestPercentile = response.data.highestPercentile;
   }
 
   async updatePlayerStats() {
@@ -76,7 +81,8 @@ export default class Stats {
     setTimeout(2000);
   }
 
-  fetchLeaderboard() {
-    
+  async fetchLeaderboard() {
+    let response = await axios(`${baseUrl}/stats/leaderboard`);
+    this.leaderboard = response.data;
   }
 }
