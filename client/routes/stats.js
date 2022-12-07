@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const redis = require('../redis');
 
 router.get('/leaderboard', (req, res) => {
   res.json([
@@ -39,8 +40,23 @@ router.get('/player/:playerId', (req, res) => {
   });
 });
 
-router.put('/player/:playerId', (req, res) => {
-
+router.put('/player/:playerId', async (req, res) => {
+  const playerId = req.params.playerId;
+  const highestTile = req.body.highestTile;
+  const highScore = req.body.highScore;
+  const username = req.body.username;
+  if (!await redis.exists(playerId)) {
+    redis.hSet (playerId, {
+      highestTile: highestTile,
+      highScore: highScore,
+      username: username
+    });
+    return;
+  }
+  const playerRecords = await redis.hGetAll(playerId);
+  if (playerRecords.highestTile < highestTile) await redis.hSet(playerId, 'highestTile', highestTile);
+  if (playerRecords.highScore < highScore) await redis.hSet(playerId, 'highScore', highScore);
+  if (playerRecords.username != username) await redis.hSet(playerId, 'username', username);
 });
 
 module.exports = router;

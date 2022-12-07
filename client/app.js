@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const port = 2048;
+const redisClient = require('./redis');
 
 const app = express();
 
