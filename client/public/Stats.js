@@ -3,18 +3,20 @@ const baseUrl = 'http://localhost:2048';
 export default class Stats {
   #highScore
   #highestTile
-  #highestRank
-  #highestPercentile
+  #currentRank
+  #currentPercentile
   #leaderboard
   #playerId
+  #username
   
   constructor(playerId) {
     this.#playerId = playerId;
-    this.#highScore = localStorage.getItem("highScore") || 0;
-    this.#highestTile = localStorage.getItem("highestTile") || 0;
-    this.#highestRank = localStorage.getItem("highestRank") || 0;
-    this.#highestPercentile = localStorage.getItem("highestPercentile") || 0;
+    this.#highScore = parseInt(localStorage.getItem("highScore")) || 0;
+    this.#highestTile = parseInt(localStorage.getItem("highestTile")) || 0;
+    this.#currentRank = localStorage.getItem("currentRank") || 0;
+    this.#currentPercentile = localStorage.getItem("currentPercentile") || 0;
     this.#leaderboard = localStorage.getItem("leaderboard") || [];
+    this.#username = localStorage.getItem("username") || 'UnknownPlayer';
     this.fetchPlayerStats();
     this.fetchLeaderboard();
   }
@@ -41,22 +43,22 @@ export default class Stats {
     localStorage.setItem("highestTile", this.#highestTile);
   }
 
-  get highestRank() {
-    return this.#highestRank;
+  get currentRank() {
+    return this.#currentRank;
   }
 
-  set highestRank(value) {
-    this.#highestRank = value;
-    localStorage.setItem("highestRank", this.#highestRank);
+  set currentRank(value) {
+    this.#currentRank = value;
+    localStorage.setItem("currentRank", this.#currentRank);
   }
 
-  get highestPercentile() {
-    return this.#highestPercentile;
+  get currentPercentile() {
+    return this.#currentPercentile;
   }
 
-  set highestPercentile(value) {
-    this.#highestPercentile = value;
-    localStorage.setItem("highestPercentile", this.#highestPercentile);
+  set currentPercentile(value) {
+    this.#currentPercentile = value;
+    localStorage.setItem("currentPercentile", this.#currentPercentile);
   }
 
   get leaderboard() {
@@ -68,12 +70,21 @@ export default class Stats {
     localStorage.setItem("leaderboard", this.#leaderboard);
   }
 
+  get username() {
+    return this.#username;
+  }
+
+  set username(value) {
+    this.#username = value;
+    localStorage.setItem("username", value);
+  }
+
   async fetchPlayerStats() {
     let response = await axios(`${baseUrl}/stats/player/${this.playerId}`);
-    this.highScore = response.data.highScore;
-    this.highestTile = response.data.highestTile;
-    this.highestRank = response.data.highestRank;
-    this.highestPercentile = response.data.highestPercentile;
+    this.highScore = response.data.highScore || this.highScore;
+    this.highestTile = response.data.highestTile || this.highestTile;
+    this.currentRank = response.data.currentRank || this.currentRank;
+    this.currentPercentile = response.data.currentPercentile || this.currentPercentile;
   }
 
   async updatePlayerStats() {

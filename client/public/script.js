@@ -12,6 +12,7 @@ if (!localStorage.getItem("playerId")) localStorage.setItem("playerId", uuidv4()
 const playerId = localStorage.getItem("playerId");
 const stats = new Stats(playerId);
 const statsModal = setupStatsModal();
+setupReplayButton(statsModal.modalContainer);
 const grid = new Grid(gameBoard);
 
 grid.randomEmptyCell().tile = new Tile(gameBoard);
@@ -73,10 +74,8 @@ async function handleInput(e) {
   setupInput();
 
   if (!canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight()) {
-    newTile.waitForTransition(true).then(() => {
-      handleGameOver();
-    });
-    return;
+    await newTile.waitForTransition(true);
+    handleGameOver();
   }
 }
 
@@ -198,15 +197,15 @@ function canMove(cells) {
   })
 }
 
-function handleGameOver() {
+async function handleGameOver() {
   if (stats.highScore < currentGame.score) {
     stats.highScore = currentGame.score
   }
   if (stats.highestTile < currentGame.highestTile) {
     stats.highestTile = currentGame.highestTile
   }
-  stats.updatePlayerStats();
-  statsModal.show();
+  await stats.updatePlayerStats();
+  await statsModal.show();
 }
 
 function setupStatsModal() {
@@ -234,8 +233,6 @@ function populateStatsModal(modal) {
     elem.closest("[data-stat-container]").classList.toggle("best", best)
   }
 
-  setupReplayButton(modal);
-
   setValue(
     "current-game-score",
     currentGame.score,
@@ -249,8 +246,8 @@ function populateStatsModal(modal) {
 
   setValue("high-score", stats.highScore)
   setValue("highest-tile", stats.highestTile)
-  setValue("highest-rank", stats.highestRank)
-  setValue("highest-percentile", `Top ${stats.highestPercentile}%`)
+  setValue("current-rank", stats.currentRank)
+  setValue("current-percentile", `Top ${stats.currentPercentile}%`)
 }
 
 function populateLeaderboard(leaderboardElem) {
