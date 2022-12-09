@@ -77,8 +77,11 @@ export default class Stats {
   }
 
   async updatePlayerStats() {
-    // save to db
-    setTimeout(2000);
+    await axios.put(`${baseUrl}/stats/player/${this.playerId}`, {
+      highestTile: this.highestTile,
+      highScore: this.highScore,
+      username: this.username
+    });
   }
 
   async fetchLeaderboard() {

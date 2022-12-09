@@ -1,0 +1,10 @@
+zadd leaderboard 108 p1 114 p2 212 p3 214 p4 414 p5 514 p6 1214 p7 1254 p8 1824 p9
+hset p1 highScore 108 highestTile 8 username coolguy1
+hset p2 highScore 114 highestTile 16 username coolgal21
+hset p3 highScore 212 highestTile 16 username 3coolguy48
+hset p4 highScore 214 highestTile 16 username awesomesauce
+hset p5 highScore 414 highestTile 32 username windywilly
+hset p6 highScore 514 highestTile 64 username zxtentxz
+hset p7 highScore 1214 highestTile 128 username treesaregreat
+hset p8 highScore 1254 highestTile 128 username wontubemine
+hset p9 highScore 1824 highestTile 128 username imdabest69

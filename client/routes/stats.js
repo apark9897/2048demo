@@ -3,32 +3,7 @@ const router = express.Router();
 const redis = require('../redis');
 
 router.get('/leaderboard', (req, res) => {
-  res.json([
-    {
-      user: 'TestUser',
-      score: 20984465
-    },
-    {
-      user: 'TestUser',
-      score: 2098246
-    },
-    {
-      user: 'TestUser',
-      score: 2098234
-    },
-    {
-      user: 'TestUser',
-      score: 209824
-    },
-    {
-      user: 'TestUser',
-      score: 209829
-    },
-    {
-      user: 'TestUser',
-      score: 20982
-    },
-  ])
+  res.json(redis.zRangeWithScores('leaderboard', 0, -1, 'desc'));
 });
 
 router.get('/player/:playerId', (req, res) => {

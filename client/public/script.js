@@ -257,7 +257,7 @@ function populateLeaderboard(leaderboardElem) {
   const rows = leaderboardElem.children;
   for (let i = 0; i < stats.leaderboard.length; i++) {
     const rowElem = rows[i];
-    rowElem.querySelector(`[data-ranked-user]`).textContent = stats.leaderboard[i].user;
+    rowElem.querySelector(`[data-ranked-user]`).textContent = stats.leaderboard[i].username;
     rowElem.querySelector(`[data-ranked-score]`).textContent = stats.leaderboard[i].score;
   }
 }
