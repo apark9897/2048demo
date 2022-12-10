@@ -14,6 +14,7 @@ const stats = new Stats(playerId);
 const statsModal = setupStatsModal();
 setupReplayButton(statsModal.modalContainer);
 const settingsModal = setupSettingsModal();
+setupSaveSettingsButton(settingsModal.modalContainer);
 const grid = new Grid(gameBoard);
 
 grid.randomEmptyCell().tile = new Tile(gameBoard);
@@ -218,7 +219,7 @@ function setupStatsModal() {
     document.querySelector("[data-stats-modal-template]"),
     {
       onOpen: modal => {
-        stopInput()
+        stopInput();
         populateStatsModal(modal)
       },
       onClose: () => setupInput(),
@@ -282,6 +283,16 @@ function setupReplayButton(modal) {
   })
 }
 
+function setupSaveSettingsButton(modal) {
+  const saveBtn = modal.querySelector("[data-settings-save-btn]");
+  saveBtn.addEventListener("click", async () => {
+    stats.username = modal.querySelector("[data-username-input]").value;
+    await stats.updatePlayerUsername();
+    await stats.fetchLeaderboard();
+    settingsModal.hide();
+  })
+}
+
 function setupSettingsModal() {
   const settingsBtn = document.querySelector("[data-settings-btn]");
   settingsBtn.addEventListener("click", () => {
@@ -291,7 +302,8 @@ function setupSettingsModal() {
     document.querySelector("[data-settings-modal-template]"),
     {
       onOpen: modal => {
-        stopInput()
+        stopInput();
+        modal.querySelector("[data-username-input]").value = stats.username;
       },
       onClose: () => setupInput(),
     }

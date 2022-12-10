@@ -95,6 +95,12 @@ export default class Stats {
     });
   }
 
+  async updatePlayerUsername() {
+    await axios.put(`${baseUrl}/stats/player/${this.playerId}`, {
+      username: this.username
+    });
+  }
+
   async fetchLeaderboard() {
     let response = await axios(`${baseUrl}/stats/leaderboard`);
     this.leaderboard = response.data;

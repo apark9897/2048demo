@@ -28,13 +28,16 @@ router.put('/player/:playerId', async (req, res) => {
     ...(highestTile && { highestTile: highestTile }),
     ...(highScore && { highScore: highScore }),
     ...(username && { username: username }),
-    currentRank: newRank,
-    currentPercentile: newPercentile
+    ...(newRank && {currentRank: newRank}),
+    ...(newPercentile && {currentPercentile: newPercentile})
   });
   res.json({ status: 'success' });
 });
 
 async function updateCurrentStanding(highScore, playerId) {
+  if (!highScore || !playerId) {
+    return [null, null]
+  }
   await redis.zAdd('leaderboard', { score: highScore, value: playerId });
   const playerCount = await redis.zCard('leaderboard');
   const playerRank = await redis.zRevRank('leaderboard', playerId) + 1;
