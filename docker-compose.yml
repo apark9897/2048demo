@@ -1,0 +1,22 @@
+version: '3'
+services:
+  redis:
+    build: ./redis
+    ports:
+      - 6379:6379
+    networks:
+      - webnet
+  client:
+    build: ./client
+    ports:
+      - 2048:2048
+    networks:
+      - webnet
+    environment:
+      REDIS_HOST: 'redis://redis:6379'
+      CLIENT_PORT: 2048
+    depends_on:
+      - redis
+networks:
+  webnet:
+    driver: bridge

@@ -271,6 +271,7 @@ function setupReplayButton(modal) {
       stats.highestTile = currentGame.highestTile
     }
     await stats.updatePlayerStats();
+    await stats.fetchLeaderboard();
     grid.clearBoard();
     currentGame.score = 0;
     currentGame.highestTile = 0;

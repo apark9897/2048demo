@@ -4,3 +4,4 @@ COPY . .
 RUN chmod -R 777 .
 ENTRYPOINT ["./my-entrypoint.sh"]
 CMD ["redis-server"]
+EXPOSE 6379

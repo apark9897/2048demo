@@ -3,7 +3,7 @@ const router = express.Router();
 const redis = require('../redis');
 
 router.get('/leaderboard', async (req, res) => {
-  const leaderboard = await redis.zRangeWithScores('leaderboard', '+inf', '-inf', { BY: 'SCORE', REV: true, LIMIT: { offset: 0, count: 10 } });
+  const leaderboard = await redis.zRangeWithScores('leaderboard', '+inf', '0', { BY: 'SCORE', REV: true, LIMIT: { offset: 0, count: 10 } });
   for (let ranker of leaderboard) {
     ranker.username = await redis.hGet(ranker.value, 'username') || 'UnknownPlayer';
   }
