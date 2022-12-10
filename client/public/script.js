@@ -13,6 +13,7 @@ const playerId = localStorage.getItem("playerId");
 const stats = new Stats(playerId);
 const statsModal = setupStatsModal();
 setupReplayButton(statsModal.modalContainer);
+const settingsModal = setupSettingsModal();
 const grid = new Grid(gameBoard);
 
 grid.randomEmptyCell().tile = new Tile(gameBoard);
@@ -279,4 +280,20 @@ function setupReplayButton(modal) {
     grid.randomEmptyCell().tile = new Tile(gameBoard);
     grid.randomEmptyCell().tile = new Tile(gameBoard);
   })
+}
+
+function setupSettingsModal() {
+  const settingsBtn = document.querySelector("[data-settings-btn]");
+  settingsBtn.addEventListener("click", () => {
+    settingsModal.show()
+  })
+  return new Modal(
+    document.querySelector("[data-settings-modal-template]"),
+    {
+      onOpen: modal => {
+        stopInput()
+      },
+      onClose: () => setupInput(),
+    }
+  )
 }

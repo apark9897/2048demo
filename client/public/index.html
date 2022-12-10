@@ -13,6 +13,17 @@
 
 <body>
   <header class="header">
+    <button data-settings-btn class="icon-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="-120 -50 592.615 592.615"
+        enable-background="new 0 0 472.615 472.615">
+        <circle cx="236.308" cy="117.504" r="111.537" />
+        <g>
+          <path d="M369,246.306c-1.759-1.195-5.297-3.493-5.297-3.493c-28.511,39.583-74.993,65.402-127.395,65.402
+			c-52.407,0-98.894-25.825-127.404-65.416c0,0-2.974,1.947-4.451,2.942C41.444,288.182,0,360.187,0,441.87v24.779h472.615V441.87
+			C472.615,360.549,431.538,288.822,369,246.306z" />
+        </g>
+      </svg>
+    </button>
     <button data-stats-btn class="icon-btn">
       <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" viewBox="0 0 24 24">
         <rect fill="none" height="24" width="24" />
@@ -30,6 +41,29 @@
     </div>
   </header>
   <div id="game-board"></div>
+  <template data-settings-modal-template>
+    <div class="modal" data-modal role="dialog" aria-labelledby="settingsModalTitle">
+      <button aria-label="Close" class="modal-close-btn" data-modal-close>&times;</button>
+      <header class="modal-header">
+        <h2 id="settingsModalTitle" class="modal-title">User Settings</h2>
+      </header>
+      <div class="modal-body">
+        <div class="modal-section">
+          <div class="settings-form-section">
+            <form action="" method="" class="settings-form">
+              <div class="settings-form-group">
+                <label for="username" class="settings-form-label">Username</label>
+                <input type="text" name="username" id="username" class="settings-form-input">
+              </div>
+            </form>
+          </div>
+          <div class="settings-bottom-section">
+            <button aria-label="Save" class="settings-save-btn">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
   <template data-stats-modal-template>
     <div class="modal stat-modal" data-modal role="dialog" aria-labelledby="statsModalTitle">
       <button aria-label="Close" class="modal-close-btn" data-modal-close>&times;</button>

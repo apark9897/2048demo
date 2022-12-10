@@ -349,3 +349,75 @@ body {
   background-color: hsl(200, 50%, 40%);
   color: hsl(200, 50%, 5%);
 }
+
+.settings-bottom-section {
+  margin-top: 1.25em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.settings-form-section {
+  display: flex;
+  justify-content: center;
+}
+
+.settings-form {
+  width: 60%;
+  text-align: center;
+}
+
+.settings-form-group {
+  margin: 0;
+}
+
+.settings-form-label {
+  display: block;
+  position: relative;
+  font-size: max(2.5vmin, 15px);
+  font-weight: 600;
+  color: var(--text-color-dark);
+  text-align: center;
+  line-height: 1.2;
+  padding-bottom: .25em;
+}
+
+.settings-form-input {
+  display: block;
+  border: 0;
+  border-radius: .25em;
+  background-color: var(--modal-background-color);
+  color: var(--text-color-light);
+  font-weight: 600;
+  font-size: max(3vmin, 18px);
+  outline: none;
+  box-shadow: 0 0 .25em var(--text-color-dark);
+  line-height: inherit;
+  margin: .5em auto;
+  text-align: center;
+  width: 100%;
+}
+
+.settings-save-btn {
+  background-color: hsl(200, 50%, 50%);
+  color: hsl(200, 50%, 10%);
+  fill: currentColor;
+  border: none;
+  padding: .5em;
+  font-size: max(2.5vmin, 16px);
+  font-weight: bold;
+  border-radius: .25em;
+  transition: 150ms ease-in-out;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.settings-save-btn:hover,
+.settings-save-btn:focus {
+  background-color: hsl(200, 50%, 40%);
+  color: hsl(200, 50%, 5%);
+}

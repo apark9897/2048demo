@@ -25,9 +25,9 @@ router.put('/player/:playerId', async (req, res) => {
   const username = req.body.username;
   const [newRank, newPercentile] = await updateCurrentStanding(highScore, playerId);
   redis.hSet(playerId, {
-    highestTile: highestTile,
-    highScore: highScore,
-    username: username,
+    ...(highestTile && { highestTile: highestTile }),
+    ...(highScore && { highScore: highScore }),
+    ...(username && { username: username }),
     currentRank: newRank,
     currentPercentile: newPercentile
   });
@@ -38,7 +38,7 @@ async function updateCurrentStanding(highScore, playerId) {
   await redis.zAdd('leaderboard', { score: highScore, value: playerId });
   const playerCount = await redis.zCard('leaderboard');
   const playerRank = await redis.zRevRank('leaderboard', playerId) + 1;
-  return [playerRank, Math.floor(playerRank / playerCount)];
+  return [playerRank, +(playerRank / playerCount * 100).toFixed(3)];
 }
 
 module.exports = router;
