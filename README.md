@@ -1,9 +1,9 @@
 # 2048 Demo
 A clone of 2048 that I built to practice front-end app dev.
 
-![2048 game](https://github.com/apark9897/ecommerce/blob/main/mockups/ecommerce_homepage.png?raw=true)
-![leaderboard](https://github.com/apark9897/ecommerce/blob/main/mockups/ecommerce_cart.png?raw=true)
-![user settings](https://github.com/apark9897/ecommerce/blob/main/mockups/ecommerce_orderspage.png?raw=true)
+![2048 game](https://github.com/apark9897/2048demo/blob/main/mockups/main.gif?raw=true)
+![leaderboard](https://github.com/apark9897/2048demo/blob/main/mockups/leaderboard.png?raw=true)
+![user settings](https://github.com/apark9897/2048demo/blob/main/mockups/user_settings.png?raw=true)
 
 ## Features
 - 2048 game
